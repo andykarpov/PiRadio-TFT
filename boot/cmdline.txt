@@ -1,0 +1,1 @@
+fbtft_device.name=adafruit22a fbtft_device.buswidth=8 fbtft_device.gpios=reset:25,dc:24,led:18 fbtft_device.rotate=90 fbtft_device.speed=32000000 fbtft_device.bgr=1 fbcon=map:10 fbcon=font:ProFont6x11 dwc_otg.lpm_enable=0 console=ttyAMA0,115200 kgdboc=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait
