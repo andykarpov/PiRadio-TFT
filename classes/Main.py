@@ -5,7 +5,7 @@ import os
 import time
 from datetime import datetime
 from classes.Playlist import Playlist
-from classes.MPDWrapper import MPDWrapper
+from mplayer import Player, CmdPrefix
 from classes.Config import Config
 from classes.State import State
 from classes.Encoder import Encoder
@@ -23,7 +23,8 @@ import chardet
 class Main(Process):
 
     playlist = None
-    mpd = None
+    player = None
+    icy_current_song = None
     state = None
     volume_encoder = None
     channel_encoder = None
@@ -71,9 +72,10 @@ class Main(Process):
 
         self.playlist = Playlist()
 
-        self.mpd = MPDWrapper(Config.mpd_host, Config.mpd_port, Config.mpd_password)
-        self.mpd.connect()
-        self.mpd.load_playlist(self.playlist.playlist)
+	Player.cmd_prefix = CmdPrefix.PAUSING_KEEP
+
+        self.player = Player()
+	self.player.stdout.connect(self.player_handle_data)
 
         # todo: add bass, treble support
         self.state = State()
@@ -97,10 +99,12 @@ class Main(Process):
 
         self.last_volume = self.state.volume
         self.last_channel = self.state.channel
+        self.last_played_channel = self.last_channel
 
         self.keyboard = Keyboard()
 
-        self.mpd.play(self.state.channel)
+        station_url = self.playlist.playlist[self.state.channel].url
+        self.player.loadfile(station_url)
 
         self.scene = AppRadio(self)
 
@@ -154,7 +158,7 @@ class Main(Process):
             if self.need_change_song:
                 self.need_change_song = False
                 self.last_played_channel = self.channel
-                self.mpd.play(self.channel)
+                self.player.loadfile(self.playlist.playlist[self.channel].url)
 
             if self.need_save_state:
                 self.need_save_state = False
@@ -176,13 +180,20 @@ class Main(Process):
         decoded = text.decode(guess["encoding"])
         return decoded
 
+    def player_handle_data(self, line):
+       if line.startswith('ICY Info:'):
+           info = line.split(':', 1)[1].strip()
+           attrs = dict(re.findall("(\w+)='([^']*)'", info))
+           self.icy_current_song = attrs.get('StreamTitle', '(none)')
+           print self.icy_current_song
+
     def fetch_song_title(self):
-        current_song = self.mpd.currentsong()
-        if current_song is not None and current_song != '' and 'title' in current_song[0]:
-            title = self.unicodify(current_song[0]['title'])
+
+        if self.icy_current_song is not None and icy_current_song != '':
+            title = self.unicodify(self.icy_current_song)
             return title.upper()
         else:
-            return ''
+            return '---'
 
     def fetch_station_title(self):
         station = self.playlist.playlist[self.channel]

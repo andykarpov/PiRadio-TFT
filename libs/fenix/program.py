@@ -19,8 +19,8 @@ class Mouse(process.Process):
 	def __setattr__(self, name, value):
 		""" Checks if we're setting visibility """
 		process.Process.__setattr__(self,name,value)	
-		if name == "visible":
-			pygame.mouse.set_visible(value)
+		#if name == "visible":
+		#	pygame.mouse.set_visible(value)
 			
 
 class Text(process.Process):
@@ -291,7 +291,7 @@ class Program:
 		""" Initialises Pygame and starts up lots of other shizzle """
 		#pygame.mixer.pre_init(22050, -16, 8, 1024)
 		pygame.init()
-		pygame.mouse.set_visible(False)
+		#pygame.mouse.set_visible(False)
 		pygame.key.set_repeat(10, 0)
 		
 		cls.clock = pygame.time.Clock()
