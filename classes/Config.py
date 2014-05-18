@@ -14,8 +14,8 @@ class Config:
     playlist = "/home/pi/PiRadio-TFT/data/radio.m3u"
     state = "/home/pi/PiRadio-TFT/data/state.txt"
 
-    menu_font = "/home/pi/PiRadio-TFT/gfx/zxsp____.ttf"
-    menu_font_bold = "/home/pi/PiRadio-TFT/gfx/zxspb___.ttf"
+    menu_font = "/home/pi/PiRadio-TFT/gfx/PressStart2P.ttf"
+    menu_font_bold = "/home/pi/PiRadio-TFT/gfx/PressStart2P.ttf"
 
     font_size_big = 14
     font_size_small = 10
