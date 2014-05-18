@@ -3,6 +3,7 @@
 
 import os
 import time
+import re
 from datetime import datetime
 from classes.Playlist import Playlist
 from mplayer import Player, CmdPrefix
@@ -24,7 +25,6 @@ class Main(Process):
 
     playlist = None
     player = None
-    icy_current_song = None
     state = None
     volume_encoder = None
     channel_encoder = None
@@ -34,6 +34,8 @@ class Main(Process):
     channel = 0
     volume = 0
     key = None
+
+    icy_current_song = None
 
     last_channel = 0
     last_played_channel = 0
@@ -189,11 +191,11 @@ class Main(Process):
 
     def fetch_song_title(self):
 
-        if self.icy_current_song is not None and icy_current_song != '':
+        if self.icy_current_song is not None and self.icy_current_song != '':
             title = self.unicodify(self.icy_current_song)
             return title.upper()
         else:
-            return '---'
+            return ''
 
     def fetch_station_title(self):
         station = self.playlist.playlist[self.channel]

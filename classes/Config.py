@@ -7,7 +7,7 @@ class Config:
     debug = True
 
     default_screen_size = (320, 240)
-    fps = 15
+    fps = 10
     full_screen = True
     fb_dev = "/dev/fb1"
 
@@ -26,10 +26,6 @@ class Config:
 
     state_save_timeout = 10000
     mpd_poll_timeout = 2000
-
-    mpd_host = "localhost"
-    mpd_port = 6600
-    mpd_password = None
 
     init_delay = 0.1
     write_delay = 0.01
