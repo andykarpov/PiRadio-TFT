@@ -160,6 +160,8 @@ class Main(Process):
             if self.need_change_song:
                 self.need_change_song = False
                 self.last_played_channel = self.channel
+		del self.player
+		self.player = Player()
                 self.player.loadfile(self.playlist.playlist[self.channel].url)
 
             if self.need_save_state:
@@ -192,8 +194,11 @@ class Main(Process):
     def fetch_song_title(self):
 
         if self.icy_current_song is not None and self.icy_current_song != '':
-            title = self.unicodify(self.icy_current_song)
-            return title.upper()
+	    try:
+                title = self.unicodify(self.icy_current_song)
+                return title.upper()
+            except UnicodeDecodeError:
+                return ''
         else:
             return ''
 

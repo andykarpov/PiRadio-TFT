@@ -65,5 +65,5 @@ class Encoder():
         return self.value
 
     def debug(self, msg):
-        if self.debug:
+        if self.debug == True:
             print msg
