@@ -163,6 +163,7 @@ class Main(Process):
 		del self.player
 		self.player = Player()
                 self.player.loadfile(self.playlist.playlist[self.channel].url)
+                self.player.stdout.connect(self.player_handle_data)
 
             if self.need_save_state:
                 self.need_save_state = False
