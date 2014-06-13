@@ -5,6 +5,8 @@ http://stream-relay.tiahost.de:8022
 http://relay3.slayradio.org:8000/
 #EXTINF:-1,Radio Paradise
 http://stream-uk1.radioparadise.com/mp3-192
+#EXTINF:-1,Slam FM
+http://82.201.100.23/SLAMFM_WEB_AAC
 #EXTINF:-1,ABC Lounge
 http://listen.radionomy.com/abc-lounge
 #EXTINF:-1,Ambiance Lounge
@@ -139,8 +141,6 @@ http://stream01.media.rambler.ru:80/mix128.mp3
 http://stream1.radiostyle.ru:8001/biker-fm
 #EXTINF:-1,Радио Проминь
 http://nrcu.gov.ua:8000/ur2-aacplus
-#EXTINF:-1,Радио Маяк
-http://livestream.rfn.ru:8080/mayakfm/mp3_192kbps
 #EXTINF:-1,Наше Радио
 http://94.25.53.133/nashe-128.mp3
 #EXTINF:-1,Sunradio Children
@@ -151,5 +151,24 @@ http://stream1.radiostyle.ru:8001/agakids
 http://music.myradio.com.ua:8000/kids-songs128.mp3
 #EXTINF:-1,Makradio Kids Hit
 http://stream01.media.rambler.ru:80/makdeti128.mp3
+#EXTINF:-1,Радио Маяк
+http://livestream.rfn.ru:8080/mayakfm
 #EXTINF:-1,Вести ФМ
 mms://live.rfn.ru/vesti_fm
+#EXTINF:-1,Радиола Саратов
+http://radiolaeka.gkvr.ru:8000/radiola_srt_64.mp3
+#EXTINF:-1,Радио Губерния
+http://www.gubernia-media.ru:8000/gubernia
+#EXTINF:-1,EuroNews
+http://euronews-05.ice.infomaniak.ch/euronews-05.aac
+#EXTINF:-1,Chicago New Life Radio
+http://chicago-nlr.nstelcom.com:29468/ChicagoNewLifeRadio_96.mp3.m3u
+#EXTINF:-1,Raadio 4
+http://r4.err.ee/gfx/raadio4128.m3u
+#EXTINF:-1,Радио Народное Москва
+http://213.85.130.203:8080/stream.mp3
+#EXTINF:-1,RFI Russe
+http://95.81.147.3/2587/rfi_en_russe/rfirusse.mp3
+#EXTINF:-1,Voice of Russia
+http://russerver.streamr.ru:8021/rus.pls
+

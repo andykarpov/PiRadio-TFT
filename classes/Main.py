@@ -4,6 +4,7 @@
 import os
 import time
 import re
+import subprocess
 from datetime import datetime
 from classes.Playlist import Playlist
 from mplayer import Player, CmdPrefix
@@ -161,6 +162,7 @@ class Main(Process):
                 self.need_change_song = False
                 self.last_played_channel = self.channel
 		del self.player
+		subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
 		self.player = Player()
                 self.player.loadfile(self.playlist.playlist[self.channel].url)
                 self.player.stdout.connect(self.player_handle_data)
@@ -198,7 +200,7 @@ class Main(Process):
 	    try:
                 title = self.unicodify(self.icy_current_song)
                 return title.upper()
-            except UnicodeDecodeError:
+            except Exception:
                 return ''
         else:
             return ''
