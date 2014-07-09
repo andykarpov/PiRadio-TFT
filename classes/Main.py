@@ -161,8 +161,11 @@ class Main(Process):
             if self.need_change_song:
                 self.need_change_song = False
                 self.last_played_channel = self.channel
-		del self.player
-		subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
+		#del self.player
+		#time.sleep(0.5)
+		#subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
+		os.system("ps -C mplayer -o pid=|xargs kill -9")
+		time.sleep(0.5)
 		self.player = Player()
                 self.player.loadfile(self.playlist.playlist[self.channel].url)
                 self.player.stdout.connect(self.player_handle_data)

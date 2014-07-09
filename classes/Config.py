@@ -7,7 +7,7 @@ class Config:
     debug = True
 
     default_screen_size = (320, 240)
-    fps = 10
+    fps = 5
     full_screen = True
     fb_dev = "/dev/fb1"
 
