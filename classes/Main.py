@@ -87,9 +87,9 @@ class Main(Process):
         print "State channel: {0}".format(self.state.channel)
 
         self.volume_encoder = Encoder(0x48, 0, 100, self.state.volume)
-        time.sleep(0.1)
+        time.sleep(1)
         self.channel_encoder = Encoder(0x47, 0, len(self.playlist.playlist) - 1, self.state.channel)
-        time.sleep(0.1)
+        time.sleep(1)
 
         self.pt2314 = PT2314()
         self.pt2314.setVolume(self.state.volume)
@@ -98,7 +98,7 @@ class Main(Process):
         self.pt2314.selectChannel(0)
         self.pt2314.loudnessOn()
         self.pt2314.muteOff()
-        time.sleep(0.1)
+        time.sleep(1)
 
         self.last_volume = self.state.volume
         self.last_channel = self.state.channel
@@ -112,67 +112,69 @@ class Main(Process):
         self.scene = AppRadio(self)
 
         while True:
+            try:
+                micro = self.get_micro()
 
-            micro = self.get_micro()
+                self.volume = self.volume_encoder.get_value()
+                if self.volume > 100:
+                    self.volume = 100
+                    self.volume_encoder.set_value(self.volume)
+                    self.volume_encoder.set_max_value(self.volume)
 
-            self.volume = self.volume_encoder.get_value()
-            if self.volume > 100:
-                self.volume = 100
-                self.volume_encoder.set_value(self.volume)
-                self.volume_encoder.set_max_value(self.volume)
+                self.channel = self.channel_encoder.get_value()
+                if self.channel > len(self.playlist.playlist) - 1:
+                    self.channel = len(self.playlist.playlist) - 1
+                    self.channel_encoder.set_value(self.channel)
+                    self.channel_encoder.set_max_value(self.channel)
 
-            self.channel = self.channel_encoder.get_value()
-            if self.channel > len(self.playlist.playlist) - 1:
-                self.channel = len(self.playlist.playlist) - 1
-                self.channel_encoder.set_value(self.channel)
-                self.channel_encoder.set_max_value(self.channel)
+                self.key = self.keyboard.reading_all()
 
-            self.key = self.keyboard.reading_all()
+                if self.last_volume != self.volume:
+                    self.pt2314.setVolume(self.volume)
+                    #print "Volume: {0}".format(self.volume)
+                    self.last_volume = self.volume
+                    self.last_volume_changed_time = micro
 
-            if self.last_volume != self.volume:
-                self.pt2314.setVolume(self.volume)
-                #print "Volume: {0}".format(self.volume)
-                self.last_volume = self.volume
-                self.last_volume_changed_time = micro
+                if self.last_channel != self.channel:
+                    #todo: play mpd, save state
+                    #print "Channel: {0}".format(self.channel)
+                    self.last_channel = self.channel
+                    self.last_channel_changed_time = micro
 
-            if self.last_channel != self.channel:
-                #todo: play mpd, save state
-                #print "Channel: {0}".format(self.channel)
-                self.last_channel = self.channel
-                self.last_channel_changed_time = micro
+                if self.last_key != self.key:
+                    #todo: process keyboard press
+                    #print "Key: {0}".format(self.key)
+                    self.last_key = self.key
+                    self.last_keyboard_changed_time = micro
 
-            if self.last_key != self.key:
-                #todo: process keyboard press
-                #print "Key: {0}".format(self.key)
-                self.last_key = self.key
-                self.last_keyboard_changed_time = micro
+                if self.last_played_channel != self.channel and micro - self.last_channel_changed_time > 1000:
+                    self.need_change_song = True
 
-            if self.last_played_channel != self.channel and micro - self.last_channel_changed_time > 1000:
-                self.need_change_song = True
+                if self.state.volume != self.volume and micro - self.last_volume_changed_time > 5000:
+                    self.state.volume = self.volume
+                    self.need_save_state = True
 
-            if self.state.volume != self.volume and micro - self.last_volume_changed_time > 5000:
-                self.state.volume = self.volume
-                self.need_save_state = True
+                if self.state.channel != self.channel and micro - self.last_channel_changed_time > 5000:
+                    self.state.channel = self.channel
+                    self.need_save_state = True
 
-            if self.state.channel != self.channel and micro - self.last_channel_changed_time > 5000:
-                self.state.channel = self.channel
-                self.need_save_state = True
+                if self.need_change_song:
+                    self.need_change_song = False
+                    self.last_played_channel = self.channel
+		    #del self.player
+		    #time.sleep(0.5)
+		    #subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
+		    os.system("ps -C mplayer -o pid=|xargs kill -9")
+		    time.sleep(0.5)
+		    self.player = Player()
+                    self.player.loadfile(self.playlist.playlist[self.channel].url)
+                    self.player.stdout.connect(self.player_handle_data)
 
-            if self.need_change_song:
-                self.need_change_song = False
-                self.last_played_channel = self.channel
-		#del self.player
-		#time.sleep(0.5)
-		#subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
-		os.system("ps -C mplayer -o pid=|xargs kill -9")
-		time.sleep(0.5)
-		self.player = Player()
-                self.player.loadfile(self.playlist.playlist[self.channel].url)
-                self.player.stdout.connect(self.player_handle_data)
-
-            if self.need_save_state:
-                self.need_save_state = False
-                self.state.save()
+                if self.need_save_state:
+                    self.need_save_state = False
+                    self.state.save()
+            except Exception:
+                pass
 
             yield
 

@@ -7,7 +7,7 @@ class Config:
     debug = True
 
     default_screen_size = (320, 240)
-    fps = 5
+    fps = 15
     full_screen = True
     fb_dev = "/dev/fb1"
 
@@ -23,13 +23,15 @@ class Config:
     color_white = (255, 255, 255)
     color_blue = (153, 229, 255)
     color_black = (0, 0, 0)
+    color_green = (127,255,127)
+    color_blue = (127,127,255)
 
     state_save_timeout = 10000
     mpd_poll_timeout = 2000
 
     init_delay = 0.1
-    write_delay = 0.01
-    read_delay = 0.01
+    write_delay = 0.1
+    read_delay = 0.1
 
     i2c_bus = 1
 

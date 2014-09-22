@@ -64,7 +64,7 @@ class AppRadio(Process):
         offset = offset + Config.font_size_small + 12
         VolumeBar(self.main, x_offset-5, offset, 100, 100, 12, Config.color_white)
         VolumeBar(self.main, x_offset+1-5, offset+1, 100, 100, 10, Config.color_black)
-        bar = VolumeBar(self.main, x_offset+2-5, offset+2, self.main.channel+1, len(self.main.playlist.playlist), 8, Config.color_white)
+        bar = VolumeBar(self.main, x_offset+2-5, offset+2, self.main.channel+1, len(self.main.playlist.playlist), 8, Config.color_blue)
 
         offset = offset + 16
         label_pos = Program.write(self.font_small, x_offset, offset, 0, '')
@@ -78,7 +78,7 @@ class AppRadio(Process):
         offset = offset + Config.font_size_small + 12
         VolumeBar(self.main, x_offset-5, offset, 100, 100, 12, Config.color_white)
         VolumeBar(self.main, x_offset+1-5, offset+1, 100, 100, 10, Config.color_black)
-        bar2 = VolumeBar(self.main, x_offset+2-5, offset+2, self.main.volume, 100, 8, Config.color_white)
+        bar2 = VolumeBar(self.main, x_offset+2-5, offset+2, self.main.volume, 100, 8, Config.color_green)
 
         offset = offset + 16
         label_vol = Program.write(self.font_small, x_offset, offset, 0, '')

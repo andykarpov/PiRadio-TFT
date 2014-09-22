@@ -6,3 +6,6 @@ export SDL_NOMOUSE=1
 unset SDL_MOUSEDRV
 unset SDL_MOUSEDEV
 exec python2 -u run-radio.py > /dev/null 2>&1
+sleep 5
+exec run-radio.sh
+
