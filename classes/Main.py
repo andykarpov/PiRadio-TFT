@@ -87,9 +87,9 @@ class Main(Process):
         print "State channel: {0}".format(self.state.channel)
 
         self.volume_encoder = Encoder(0x48, 0, 100, self.state.volume)
-        time.sleep(1)
+        time.sleep(0.5)
         self.channel_encoder = Encoder(0x47, 0, len(self.playlist.playlist) - 1, self.state.channel)
-        time.sleep(1)
+        time.sleep(0.5)
 
         self.pt2314 = PT2314()
         self.pt2314.setVolume(self.state.volume)
@@ -98,7 +98,7 @@ class Main(Process):
         self.pt2314.selectChannel(0)
         self.pt2314.loudnessOn()
         self.pt2314.muteOff()
-        time.sleep(1)
+        time.sleep(0.5)
 
         self.last_volume = self.state.volume
         self.last_channel = self.state.channel
@@ -163,8 +163,8 @@ class Main(Process):
                     self.last_played_channel = self.channel
 		    #del self.player
 		    #time.sleep(0.5)
-		    #subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
-		    os.system("ps -C mplayer -o pid=|xargs kill -9")
+		    subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
+		    #os.system("ps -C mplayer -o pid=|xargs kill -9")
 		    time.sleep(0.5)
 		    self.player = Player()
                     self.player.loadfile(self.playlist.playlist[self.channel].url)

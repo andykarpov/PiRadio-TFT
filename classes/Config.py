@@ -7,7 +7,7 @@ class Config:
     debug = True
 
     default_screen_size = (320, 240)
-    fps = 15
+    fps = 5
     full_screen = True
     fb_dev = "/dev/fb1"
 
@@ -21,7 +21,6 @@ class Config:
     font_size_small = 10
 
     color_white = (255, 255, 255)
-    color_blue = (153, 229, 255)
     color_black = (0, 0, 0)
     color_green = (127,255,127)
     color_blue = (127,127,255)

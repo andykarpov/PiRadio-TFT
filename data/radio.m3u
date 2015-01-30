@@ -3,32 +3,30 @@
 http://icecast.vgtrk.cdnvideo.ru/vestifm_mp3_192kbps
 #EXTINF:-1,Радио Маяк
 http://livestream.rfn.ru:8080/mayakfm
-#EXTINF:-1,Хит ФМ
-http://online-hitfm.tavrmedia.ua/HitFM
+#EXTINF:-1,Романтика
+http://81.19.85.204/romantic128.mp3
+#EXTINF:-1,Юмор ФМ
+http://81.19.85.196/umor128.mp3
+#EXTINF:-1,Авторадио
+http://81.19.85.204/auto128.mp3
+#EXTINF:-1,Русское Радио
+http://rr.fmtuner.ru/
+#EXTINF:-1,Радио Спутник
+http://russerver.streamr.ru:8021/rus
+#EXTINF:-1,Пионер ФМ
+http://pioner.hostingradio.ru:8008/ppr128
 #EXTINF:-1,Ретро FM
 http://cast.radiogroup.com.ua:8000/retro
-#EXTINF:-1,Ностальжи
-http://62.244.0.9:8080/nostalgie.ogg
-#EXTINF:-1,Авторадио
-http://cast.radiogroup.com.ua:8000/avtoradio
 #EXTINF:-1,Джем ФМ
 http://cast.radiogroup.com.ua:8000/jamfm
 #EXTINF:-1,Байкер ФМ
 http://stream1.radiostyle.ru:8001/biker-fm
-#EXTINF:-1,Европа Плюс
-http://cast.radiogroup.com.ua:8000/europaplus
 #EXTINF:-1,Европа Плюс (Питер)
 http://onair.eltel.net:80/europaplus-128k
 #EXTINF:-1,Кисс ФМ
 http://online-kissfm.tavrmedia.ua:8000/kissACC
-#EXTINF:-1,Радиола Саратов
-http://radiolaeka.gkvr.ru:8000/radiola_srt_64.mp3
-#EXTINF:-1,Радио Губерния
-http://www.gubernia-media.ru:8000/gubernia
 #EXTINF:-1,Радио Эра ФМ
 http://212.26.129.2:8000/era96
 #EXTINF:-1,Radio Paradise
 http://stream-uk1.radioparadise.com/mp3-192
-#EXTINF:-1,ABC Lounge
-http://listen.radionomy.com/abc-lounge
 
