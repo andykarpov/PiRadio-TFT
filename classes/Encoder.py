@@ -22,6 +22,7 @@ class Encoder():
 
     def __init__(self, address, min_value, max_value, value):
         self.i2c_address = address
+	time.sleep(0.5);
         self.set_min_value(min_value)
         self.set_max_value(max_value)
         self.set_value(value)
@@ -30,7 +31,7 @@ class Encoder():
         self.min_value = value
         try:
             self.bus.write_byte_data(self.i2c_address, self.DEVICE_CMD_MIN, value)
-            time.sleep(0.1)
+            time.sleep(0.2)
 
         except IOError:
             self.debug("set_min_value error")
@@ -40,7 +41,7 @@ class Encoder():
         self.max_value = value
         try:
             self.bus.write_byte_data(self.i2c_address, self.DEVICE_CMD_MAX, value)
-            time.sleep(0.1)
+            time.sleep(0.2)
         except IOError:
             self.debug("set_max_value error")
             self.set_max_value(value)
@@ -49,7 +50,7 @@ class Encoder():
         self.value = value
         try:
             self.bus.write_byte_data(self.i2c_address, self.DEVICE_CMD_SET, value)
-            time.sleep(0.1)
+            time.sleep(0.2)
         except IOError:
             self.debug("set_value error")
             self.set_value(value)
@@ -57,7 +58,7 @@ class Encoder():
     def get_value(self):
         try:
             self.value = self.bus.read_byte(self.i2c_address)
-            time.sleep(0.1)
+            time.sleep(0.2)
         except IOError:
             self.debug("get_value error")
             return self.value

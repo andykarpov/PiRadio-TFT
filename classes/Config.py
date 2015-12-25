@@ -28,9 +28,9 @@ class Config:
     state_save_timeout = 10000
     mpd_poll_timeout = 2000
 
-    init_delay = 0.1
-    write_delay = 0.1
-    read_delay = 0.1
+    init_delay = 1
+    write_delay = 0.2
+    read_delay = 0.2
 
     i2c_bus = 1
 

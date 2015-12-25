@@ -1,32 +1,124 @@
 #EXTM3U
+#EXTINF:-1,Radio Paralax
+http://stream.t-n-media.de:8030
+#EXTINF:-1,SLAY Radio
+http://relay3.slayradio.org:8000/
+#EXTINF:-1,Radio Paradise
+http://stream-uk1.radioparadise.com/mp3-192
+#EXTINF:-1,ABC Lounge
+http://listen.radionomy.com/abc-lounge
+#EXTINF:-1,Ambiance Lounge
+http://listen.radionomy.com/ambiance-lounge
+#EXTINF:-1,ABC Jazz
+http://listen.radionomy.com/abc-jazz
+#EXTINF:-1,Ambiance Radio
+http://listen.radionomy.com/ambiance-radio
+#EXTINF:-1,DI - Ambient
+http://pub7.di.fm:80/di_ambient_aac
+#EXTINF:-1,DI - Ambient Space
+http://pub4.di.fm:80/di_spacemusic_aac
+#EXTINF:-1,DI - Chillout
+http://pub6.di.fm:80/di_chillout
+#EXTINF:-1,DI - PsyChill
+http://pub4.di.fm:80/di_psychill_aac
+#EXTINF:-1,DI - Drum and Bass
+http://pub7.di.fm:80/di_drumandbass_aac
+#EXTINF:-1,IndieSpectrum Radio
+http://indiespectrum.com:9000/
+#EXTINF:-1,Radiolla
+http://air.radiolla.com:80/radiolla128k
+#EXTINF:-1,Chicago House FM
+http://209.105.250.69:8218/stream
+#EXTINF:-1,Trance.FM
+http://listen.trance.fm/1/192
+#EXTINF:-1,Trance.FM Hard Channel
+http://listen.trance.fm/5/192
+#EXTINF:-1,Trance.FM DJ Channel
+http://listen.trance.fm/2/192
+#EXTINF:-1,1.FM TM - Club!
+http://sc-club-64kaac.1.fm
+#EXTINF:-1,The Eagle
+http://108.61.73.117:10002
+#EXTINF:-1,MetalHeart
+http://listen.radionomy.com/metalheart
+#EXTINF:-1,Radio Metal
+http://stream.radiometal.com:8010
+#EXTINF:-1,Thrash Zone Radio
+http://listen.radionomy.com/thrash-zone-radio
+#EXTINF:-1,Classic Rock Lounge
+http://listen.classicrocklounge.com:8000/mp3_128
+#EXTINF:-1,Guitar Spirit
+http://listen.radionomy.com/guitar-spirit
+#EXTINF:-1,Radio GuitarWarrior
+http://listen.radionomy.com/guitarwarrior
+#EXTINF:-1,181.FM - 90's Alt
+http://108.61.73.118:8052
+#EXTINF:-1,1.FM - High Voltage
+http://sc-hv-64kaac.1.fm
+#EXTINF:-1,Dream Theater
+http://listen.radionomy.com/the-dance-of-internity---dream-theater-web-radio
+#EXTINF:-1,AC/DC Radio
+http://server-uk4.radioseninternetuy.com:9436
+#EXTINF:-1,All 80s Radio
+http://174.37.110.72:8060
+#EXTINF:-1,America's Best Ballads
+http://sc-abb.1.fm:8682
+#EXTINF:-1,Classy
+http://listen.radionomy.com/classy
+#EXTINF:-1,Love Radio
+http://listen.radionomy.com/love-radio
+#EXTINF:-1,Aair Lounge Radio
+http://listen.radionomy.com/aair-lounge-radio
+#EXTINF:-1,ABC Love
+http://listen.radionomy.com/abc-love
+#EXTINF:-1,ABC MIX
+http://listen.radionomy.com/abc-mix
+#EXTINF:-1,Absolute Vintage Radio
+http://listen.radionomy.com/absolutevintage
+#EXTINF:-1,Blues Vintage Station
+http://listen.radionomy.com/a-better-classic-blues-vintage-station
+#EXTINF:13749,Absolute Disco
+http://www.live365.com/play/absdisco?sid=&lid=&from=pls
+#EXTINF:-1,Big Band Cantina
+http://wms-13.streamsrus.com:16530
+#EXTINF:-1,Easy Listening
+http://wms-15.streamsrus.com:16730
+#EXTINF:-1,181.fm - Great Oldies
+http://relay.181.fm:8132/
+#EXTINF:-1,Кисс ФМ
+http://online-kissfm.tavrmedia.ua:8000/kissACC
+#EXTINF:-1,Авторадио
+http://cast.radiogroup.com.ua:8000/avtoradio
+#EXTINF:-1,Ретро FM
+http://cast.radiogroup.com.ua:8000/retro
+#EXTINF:-1,Европа Плюс
+http://cast.radiogroup.com.ua:8000/europaplus
+#EXTINF:-1,Renessans
+http://217.20.164.163:8014/
+#EXTINF:-1,Джем ФМ
+http://cast.radiogroup.com.ua:8000/jamfm
+#EXTINF:-1,Радио Эра ФМ
+http://212.26.129.2:8000/era96
+#EXTINF:-1,Хит ФМ
+http://online-hitfm.tavrmedia.ua/HitFM
+#EXTINF:-1,Русское Радио
+http://online-rusradio.tavrmedia.ua/RusRadio
+#EXTINF:-1,Байкер ФМ
+http://stream1.radiostyle.ru:8001/biker-fm
+#EXTINF:-1,Радио Проминь
+http://nrcu.gov.ua:8000/ur2-aacplus
+#EXTINF:-1,Sunradio Children
+http://radio.sunradio.ru:80/children64
+#EXTINF:-1,Радиола Саратов
+http://radiolaeka.gkvr.ru:8000/radiola_srt_64.mp3
+#EXTINF:-1,Радио Губерния
+http://www.gubernia-media.ru:8000/gubernia
+#EXTINF:-1,EuroNews
+http://euronews-05.ice.infomaniak.ch/euronews-05.aac
+#EXTINF:-1,Радио Народное Москва
+http://213.85.130.203:8080/stream.mp3
 #EXTINF:-1,Вести ФМ
 http://icecast.vgtrk.cdnvideo.ru/vestifm_mp3_192kbps
 #EXTINF:-1,Радио Маяк
 http://livestream.rfn.ru:8080/mayakfm
-#EXTINF:-1,Романтика
-http://81.19.85.204/romantic128.mp3
-#EXTINF:-1,Юмор ФМ
-http://81.19.85.196/umor128.mp3
-#EXTINF:-1,Авторадио
-http://81.19.85.204/auto128.mp3
-#EXTINF:-1,Русское Радио
-http://rr.fmtuner.ru/
-#EXTINF:-1,Радио Спутник
-http://russerver.streamr.ru:8021/rus
-#EXTINF:-1,Пионер ФМ
-http://pioner.hostingradio.ru:8008/ppr128
-#EXTINF:-1,Ретро FM
-http://cast.radiogroup.com.ua:8000/retro
-#EXTINF:-1,Джем ФМ
-http://cast.radiogroup.com.ua:8000/jamfm
-#EXTINF:-1,Байкер ФМ
-http://stream1.radiostyle.ru:8001/biker-fm
-#EXTINF:-1,Европа Плюс (Питер)
-http://onair.eltel.net:80/europaplus-128k
-#EXTINF:-1,Кисс ФМ
-http://online-kissfm.tavrmedia.ua:8000/kissACC
-#EXTINF:-1,Радио Эра ФМ
-http://212.26.129.2:8000/era96
-#EXTINF:-1,Radio Paradise
-http://stream-uk1.radioparadise.com/mp3-192
 
