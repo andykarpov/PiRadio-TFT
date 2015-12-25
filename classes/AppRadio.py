@@ -12,6 +12,7 @@ import datetime
 class AppRadio(Process):
 
     main = None
+    font_digits = None
     font_big = None
     font_small = None
     font_tiny = None
@@ -31,11 +32,13 @@ class AppRadio(Process):
         self.font_big = Program.load_fnt(Config.menu_font_bold, Config.font_size_big)
         self.font_small = Program.load_fnt(Config.menu_font_bold, Config.font_size_small)
         self.font_tiny = Program.load_fnt(Config.menu_font, Config.font_size_small)
+	self.font_digits = Program.load_fnt(Config.menu_font_bold, Config.font_size_digits)
         self.title = self.main.fetch_station_title()
         self.song = self.main.fetch_song_title()
 
         # station
 	x_offset = 10
+	x_hidden_offset = 500
         offset = 16
         label_station = Program.write(self.font_big, x_offset, offset, 0, self.title)
         label_station.colour = Config.color_white
@@ -62,8 +65,8 @@ class AppRadio(Process):
 
         # channel
         offset = offset + Config.font_size_small + 12
-        VolumeBar(self.main, x_offset-5, offset, 100, 100, 12, Config.color_white)
-        VolumeBar(self.main, x_offset+1-5, offset+1, 100, 100, 10, Config.color_black)
+        bar_0 = VolumeBar(self.main, x_offset-5, offset, 100, 100, 12, Config.color_white)
+        bar_1 = VolumeBar(self.main, x_offset+1-5, offset+1, 100, 100, 10, Config.color_black)
         bar = VolumeBar(self.main, x_offset+2-5, offset+2, self.main.channel+1, len(self.main.playlist.playlist), 8, Config.color_blue)
 
         offset = offset + 16
@@ -71,14 +74,14 @@ class AppRadio(Process):
         label_pos.colour = Config.color_white
 
         # clock
-        label_clock = Program.write(self.font_small, self.main.screen_size[0] - 5*Config.font_size_small - 10, offset, 0, '')
+        label_clock = Program.write(self.font_digits, x_offset, offset, 0, '')
         label_clock.colour = Config.color_white
 
         # volume
         offset = offset + Config.font_size_small + 12
-        VolumeBar(self.main, x_offset-5, offset, 100, 100, 12, Config.color_white)
-        VolumeBar(self.main, x_offset+1-5, offset+1, 100, 100, 10, Config.color_black)
-        bar2 = VolumeBar(self.main, x_offset+2-5, offset+2, self.main.volume, 100, 8, Config.color_green)
+        bar2_0 = VolumeBar(self.main, x_offset-5, offset, 100, 100, 12, Config.color_white)
+        bar2_1 = VolumeBar(self.main, x_offset+1-5, offset+1, 100, 100, 10, Config.color_black)
+        bar2 = VolumeBar(self.main, x_offset+2-5, offset+2, self.main.volume, 20, 8, Config.color_green)
 
         offset = offset + 16
         label_vol = Program.write(self.font_small, x_offset, offset, 0, '')
@@ -92,6 +95,27 @@ class AppRadio(Process):
 
             bar.value = self.main.channel + 1
             bar2.value = self.main.volume
+
+	    if current - self.main.last_volume_changed_time < 3000 or current - self.main.last_channel_changed_time < 3000:
+		label_clock.x = x_offset + 20 + x_hidden_offset
+                bar_0.offset_x = x_offset-5
+                bar_1.offset_x = x_offset-4
+                bar.offset_x = x_offset-3
+                label_pos.x = x_offset		
+		bar2_0.offset_x = x_offset-5
+		bar2_1.offset_x = x_offset-4
+		bar2.offset_x = x_offset-3
+		label_vol.x = x_offset
+	    else:
+		label_clock.x = x_offset + 20
+                bar_0.offset_x = x_offset - 5 + x_hidden_offset
+                bar_1.offset_x = x_offset - 4 + x_hidden_offset
+                bar.offset_x = x_offset - 3 + x_hidden_offset
+                label_pos.x = x_offset + x_hidden_offset
+		bar2_0.offset_x = x_offset - 5 + x_hidden_offset
+		bar2_1.offset_x = x_offset - 4 + x_hidden_offset
+		bar2.offset_x = x_offset - 3 + x_hidden_offset	
+		label_vol.x = x_offset + x_hidden_offset
 
             self.title = self.main.fetch_station_title()
             if self.last_title != self.title:
@@ -129,7 +153,7 @@ class AppRadio(Process):
                 label_song4.text = ''
 
             label_pos.text = u'СТАНЦИЯ: {0} / {1}'.format(self.main.channel+1, len(self.main.playlist.playlist))
-            label_vol.text = u'ГРОМКОСТЬ: {0} %'.format(self.main.volume)
+            label_vol.text = u'ГРОМКОСТЬ: {0} %'.format(self.main.volume*5)
 
             # display time
             dt = datetime.datetime.now()

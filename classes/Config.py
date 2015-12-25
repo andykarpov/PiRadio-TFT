@@ -19,6 +19,7 @@ class Config:
 
     font_size_big = 14
     font_size_small = 10
+    font_size_digits = 52
 
     color_white = (255, 255, 255)
     color_black = (0, 0, 0)

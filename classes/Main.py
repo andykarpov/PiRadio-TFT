@@ -86,13 +86,13 @@ class Main(Process):
         print "State volume: {0}".format(self.state.volume)
         print "State channel: {0}".format(self.state.channel)
 
-        self.volume_encoder = Encoder(0x48, 0, 100, self.state.volume)
+        self.volume_encoder = Encoder(0x48, 0, 20, self.state.volume)
         time.sleep(0.5)
         self.channel_encoder = Encoder(0x47, 0, len(self.playlist.playlist) - 1, self.state.channel)
         time.sleep(0.5)
 
         self.pt2314 = PT2314()
-        self.pt2314.setVolume(self.state.volume)
+        self.pt2314.setVolume(self.state.volume*5)
         self.pt2314.setBass(0)
         self.pt2314.setTreble(12)
         self.pt2314.selectChannel(0)
@@ -116,8 +116,8 @@ class Main(Process):
                 micro = self.get_micro()
 
                 self.volume = self.volume_encoder.get_value()
-                if self.volume > 100:
-                    self.volume = 100
+                if self.volume > 20:
+                    self.volume = 20
                     self.volume_encoder.set_value(self.volume)
                     self.volume_encoder.set_max_value(self.volume)
 
@@ -130,7 +130,7 @@ class Main(Process):
                 self.key = self.keyboard.reading_all()
 
                 if self.last_volume != self.volume:
-                    self.pt2314.setVolume(self.volume)
+                    self.pt2314.setVolume(self.volume*5)
                     #print "Volume: {0}".format(self.volume)
                     self.last_volume = self.volume
                     self.last_volume_changed_time = micro
