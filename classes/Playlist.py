@@ -18,7 +18,7 @@ class Playlist:
 
     playlist = []
     filename = ""
-    debug_enabled = True
+    debug_enabled = False
 
     def __init__(self, filename=Config.playlist):
         self.filename = filename

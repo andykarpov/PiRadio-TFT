@@ -10,7 +10,6 @@ from classes.Playlist import Playlist
 from mplayer import Player, CmdPrefix
 from classes.Config import Config
 from classes.State import State
-from classes.Encoder import Encoder
 from classes.EncodersBoard import EncodersBoard
 from classes.Keyboard import Keyboard
 from classes.PT2314 import PT2314
@@ -33,8 +32,11 @@ class HttpProcessor(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('content-type','text/html')
         self.end_headers()
-        self.wfile.write("hello !")
-        ring_bell = True
+        if self.path=="/":
+            self.wfile.write("<h1 style='color: green;'>ding-dong</h1>")
+            ring_bell = True
+        else:
+            self.wfile.write("<h1 style='color: red;'>error</h1>")
 
 
 class Main(Process):
@@ -100,18 +102,12 @@ class Main(Process):
         self.player = Player()
 	self.player.stdout.connect(self.player_handle_data)
 
-        # todo: add bass, treble support
         self.state = State()
 
-        print "State volume: {0}".format(self.state.volume)
-        print "State channel: {0}".format(self.state.channel)
+        #print "State volume: {0}".format(self.state.volume)
+        #print "State channel: {0}".format(self.state.channel)
 
         self.encoders_board = EncodersBoard(0x40, 0, 20, self.state.volume, 0, len(self.playlist.playlist) - 1, self.state.channel);
-
-        #self.volume_encoder = Encoder(0x48, 0, 20, self.state.volume)
-        #time.sleep(0.5)
-        #self.channel_encoder = Encoder(0x47, 0, len(self.playlist.playlist) - 1, self.state.channel)
-        #time.sleep(0.5)
 
         self.pt2314 = PT2314()
         self.pt2314.setVolume(self.state.volume*5)
@@ -157,19 +153,14 @@ class Main(Process):
 
                 if self.last_volume != self.volume:
                     self.pt2314.setVolume(self.volume*5)
-                    #print "Volume: {0}".format(self.volume)
                     self.last_volume = self.volume
                     self.last_volume_changed_time = micro
 
                 if self.last_channel != self.channel:
-                    #todo: play mpd, save state
-                    #print "Channel: {0}".format(self.channel)
                     self.last_channel = self.channel
                     self.last_channel_changed_time = micro
 
                 if self.last_key != self.key:
-                    #todo: process keyboard press
-                    #print "Key: {0}".format(self.key)
                     self.last_key = self.key
                     self.last_keyboard_changed_time = micro
 
@@ -186,11 +177,11 @@ class Main(Process):
 
                 global ring_bell
                 if ring_bell:
-                    print "Doorbell detected";
+                    #print "Doorbell detected";
                     ring_bell = False
-                    self.pt2314.setVolume(80)
                     subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
                     time.sleep(0.5)
+                    self.pt2314.setVolume(80)
                     self.player = Player()
                     self.player.loadfile(Config.bell)
                     self.player.stdout.connect(self.player_handle_data)
@@ -201,10 +192,7 @@ class Main(Process):
                 if self.need_change_song:
                     self.need_change_song = False
                     self.last_played_channel = self.channel
-		    #del self.player
-		    #time.sleep(0.5)
 		    subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
-		    #os.system("ps -C mplayer -o pid=|xargs kill -9")
 		    time.sleep(0.5)
 		    self.player = Player()
                     self.player.loadfile(self.playlist.playlist[self.channel].url)
@@ -227,7 +215,6 @@ class Main(Process):
     def unicodify(self, text, min_confidence=0.5):
         guess = chardet.detect(text)
         if guess["confidence"] < min_confidence:
-            # chardet isn't confident enough in its guess, so:
             raise UnicodeDecodeError
         decoded = text.decode(guess["encoding"])
         return decoded
