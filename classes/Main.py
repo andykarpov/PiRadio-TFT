@@ -29,14 +29,16 @@ class HttpProcessor(BaseHTTPRequestHandler):
 
     def do_GET(self):
         global ring_bell
-        self.send_response(200)
-        self.send_header('content-type','text/html')
-        self.end_headers()
         if self.path=="/":
-            self.wfile.write("<h1 style='color: green;'>ding-dong</h1>")
+            self.send_response(200)
+            self.send_header('content-type','text/plain')
+            self.end_headers()
+            self.wfile.write("Ding-dong")
             ring_bell = True
         else:
-            self.wfile.write("<h1 style='color: red;'>error</h1>")
+            self.send_response(404)
+            self.send_header('content-type','text/plain')
+            self.end_headers()
 
 
 class Main(Process):
@@ -181,7 +183,7 @@ class Main(Process):
                     ring_bell = False
                     subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
                     time.sleep(0.5)
-                    self.pt2314.setVolume(80)
+                    self.pt2314.setVolume(95)
                     self.player = Player()
                     self.player.loadfile(Config.bell)
                     self.player.stdout.connect(self.player_handle_data)
