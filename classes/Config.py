@@ -14,6 +14,8 @@ class Config:
     playlist = "/home/pi/PiRadio-TFT/data/radio.m3u"
     state = "/home/pi/PiRadio-TFT/data/state.txt"
 
+    bell = "/home/pi/PiRadio-TFT/data/doorbell.mp3"
+
     menu_font = "/home/pi/PiRadio-TFT/gfx/zxspb___.ttf"
     menu_font_bold = "/home/pi/PiRadio-TFT/gfx/zxspb___.ttf"
 

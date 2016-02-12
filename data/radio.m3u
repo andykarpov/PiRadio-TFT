@@ -13,16 +13,6 @@ http://listen.radionomy.com/ambiance-lounge
 http://listen.radionomy.com/abc-jazz
 #EXTINF:-1,Ambiance Radio
 http://listen.radionomy.com/ambiance-radio
-#EXTINF:-1,DI - Ambient
-http://pub7.di.fm:80/di_ambient_aac
-#EXTINF:-1,DI - Ambient Space
-http://pub4.di.fm:80/di_spacemusic_aac
-#EXTINF:-1,DI - Chillout
-http://pub6.di.fm:80/di_chillout
-#EXTINF:-1,DI - PsyChill
-http://pub4.di.fm:80/di_psychill_aac
-#EXTINF:-1,DI - Drum and Bass
-http://pub7.di.fm:80/di_drumandbass_aac
 #EXTINF:-1,IndieSpectrum Radio
 http://indiespectrum.com:9000/
 #EXTINF:-1,Radiolla
@@ -101,24 +91,17 @@ http://cast.radiogroup.com.ua:8000/jamfm
 http://212.26.129.2:8000/era96
 #EXTINF:-1,Хит ФМ
 http://online-hitfm.tavrmedia.ua/HitFM
-#EXTINF:-1,Русское Радио
-http://online-rusradio.tavrmedia.ua/RusRadio
 #EXTINF:-1,Байкер ФМ
 http://stream1.radiostyle.ru:8001/biker-fm
 #EXTINF:-1,Радио Проминь
 http://nrcu.gov.ua:8000/ur2-aacplus
 #EXTINF:-1,Sunradio Children
 http://radio.sunradio.ru:80/children64
-#EXTINF:-1,Радиола Саратов
-http://radiolaeka.gkvr.ru:8000/radiola_srt_64.mp3
 #EXTINF:-1,Радио Губерния
 http://www.gubernia-media.ru:8000/gubernia
 #EXTINF:-1,EuroNews
 http://euronews-05.ice.infomaniak.ch/euronews-05.aac
-#EXTINF:-1,Радио Народное Москва
-http://213.85.130.203:8080/stream.mp3
 #EXTINF:-1,Вести ФМ
 http://icecast.vgtrk.cdnvideo.ru/vestifm_mp3_192kbps
 #EXTINF:-1,Радио Маяк
-http://livestream.rfn.ru:8080/mayakfm
-
+http://icecast.vgtrk.cdnvideo.ru/mayakfm_mp3_128kbps

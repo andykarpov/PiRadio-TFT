@@ -11,6 +11,7 @@ from mplayer import Player, CmdPrefix
 from classes.Config import Config
 from classes.State import State
 from classes.Encoder import Encoder
+from classes.EncodersBoard import EncodersBoard
 from classes.Keyboard import Keyboard
 from classes.PT2314 import PT2314
 from libs.fenix.program import Program
@@ -20,6 +21,20 @@ from pygame.locals import *
 from libs.fenix.locals import *
 from classes.AppRadio import AppRadio
 import chardet
+from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+import threading
+
+ring_bell = False
+
+class HttpProcessor(BaseHTTPRequestHandler):
+
+    def do_GET(self):
+        global ring_bell
+        self.send_response(200)
+        self.send_header('content-type','text/html')
+        self.end_headers()
+        self.wfile.write("hello !")
+        ring_bell = True
 
 
 class Main(Process):
@@ -65,6 +80,11 @@ class Main(Process):
 
         os.environ["SDL_FBDEV"] = Config.fb_dev
 
+	self.serv = HTTPServer( ("0.0.0.0", 8000), HttpProcessor)
+        thread = threading.Thread(target = self.serv.serve_forever)
+        thread.daemon = True
+        thread.start()
+
         super(Main, self).__init__()
 
     def begin(self):
@@ -86,10 +106,12 @@ class Main(Process):
         print "State volume: {0}".format(self.state.volume)
         print "State channel: {0}".format(self.state.channel)
 
-        self.volume_encoder = Encoder(0x48, 0, 20, self.state.volume)
-        time.sleep(0.5)
-        self.channel_encoder = Encoder(0x47, 0, len(self.playlist.playlist) - 1, self.state.channel)
-        time.sleep(0.5)
+        self.encoders_board = EncodersBoard(0x40, 0, 20, self.state.volume, 0, len(self.playlist.playlist) - 1, self.state.channel);
+
+        #self.volume_encoder = Encoder(0x48, 0, 20, self.state.volume)
+        #time.sleep(0.5)
+        #self.channel_encoder = Encoder(0x47, 0, len(self.playlist.playlist) - 1, self.state.channel)
+        #time.sleep(0.5)
 
         self.pt2314 = PT2314()
         self.pt2314.setVolume(self.state.volume*5)
@@ -98,7 +120,7 @@ class Main(Process):
         self.pt2314.selectChannel(0)
         self.pt2314.loudnessOn()
         self.pt2314.muteOff()
-        time.sleep(0.5)
+        time.sleep(0.1)
 
         self.last_volume = self.state.volume
         self.last_channel = self.state.channel
@@ -114,18 +136,22 @@ class Main(Process):
         while True:
             try:
                 micro = self.get_micro()
+                
+                self.encoders_board.read()
 
-                self.volume = self.volume_encoder.get_value()
+                self.volume = self.encoders_board.get_value1()
                 if self.volume > 20:
                     self.volume = 20
-                    self.volume_encoder.set_value(self.volume)
-                    self.volume_encoder.set_max_value(self.volume)
+                    self.encoders_board.set_value1(self.volume)
+                    self.encoders_board.set_max_value1(self.volume)
+                    self.encoders_board.write()
 
-                self.channel = self.channel_encoder.get_value()
+                self.channel = self.encoders_board.get_value2()
                 if self.channel > len(self.playlist.playlist) - 1:
                     self.channel = len(self.playlist.playlist) - 1
-                    self.channel_encoder.set_value(self.channel)
-                    self.channel_encoder.set_max_value(self.channel)
+                    self.encoders_board.set_value2(self.channel)
+                    self.encoders_board.set_max_value2(self.channel)
+                    self.encoders_board.write()
 
                 self.key = self.keyboard.reading_all()
 
@@ -157,6 +183,20 @@ class Main(Process):
                 if self.state.channel != self.channel and micro - self.last_channel_changed_time > 5000:
                     self.state.channel = self.channel
                     self.need_save_state = True
+
+                global ring_bell
+                if ring_bell:
+                    print "Doorbell detected";
+                    ring_bell = False
+                    self.pt2314.setVolume(80)
+                    subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
+                    time.sleep(0.5)
+                    self.player = Player()
+                    self.player.loadfile(Config.bell)
+                    self.player.stdout.connect(self.player_handle_data)
+                    time.sleep(5);
+                    self.pt2314.setVolume(self.volume*5)
+                    self.need_change_song = True
 
                 if self.need_change_song:
                     self.need_change_song = False
