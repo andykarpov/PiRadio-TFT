@@ -203,9 +203,9 @@ class Main(Process):
 
 		if self.need_change_buttons:
 		    self.need_change_buttons = False
-		    if self.last_buttons == Config.BTN_POWER:
+		    if (self.last_buttons & Config.BTN_POWER):
 			subprocess.call(["poweroff"])
-		    if self.last_buttons == Config.BTN_ALARM:
+		    if (self.last_buttons & Config.BTN_ALARM):
 			subprocess.call(["reboot"])
 
             except Exception:
