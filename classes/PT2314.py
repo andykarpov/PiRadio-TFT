@@ -91,7 +91,8 @@ class PT2314:
             self._sendByte(0xE0 | self.attenuation_r)
 
     def _updateAudioSwitch(self):
-        audioByte = 0x58  # Audio Switch Byte
+        #audioByte = 0x58  # Audio Switch Byte
+	audioByte = 0x40 # Loudness +11.25dB
         if self.loudness == True:  # Loudness
             audioByte |= 0x00
         else:

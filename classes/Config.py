@@ -37,11 +37,11 @@ class Config:
 
     i2c_bus = 1
 
-    BTN_ALARM = 4
-#    BTN_SCAN = 14
-#    BTN_MODE = 15
-    BTN_INFO = 22
-    BTN_PRESETS = 21
-    BTN_MENU = 23
-    BTN_EXIT = 7
-    BTN_SELECT = 17
+    BTN_ALARM = 128
+    BTN_SCAN = 64
+    BTN_MODE = 1
+    #BTN_INFO = 2
+    #BTN_PRESETS = 4
+    #BTN_MENU = 8
+    BTN_POWER = 16
+    BTN_SELECT = 32

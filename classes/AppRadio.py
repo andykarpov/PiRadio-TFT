@@ -87,6 +87,11 @@ class AppRadio(Process):
         label_vol = Program.write(self.font_small, x_offset, offset, 0, '')
         label_vol.colour = Config.color_white
 
+	# debug
+        offset = offset + Config.font_size_small + 2
+        label_debug = Program.write(self.font_small, x_offset, offset, 0, '')
+        label_debug.colour = Config.color_white
+
         while True:
 
             current = self.main.get_micro()
@@ -154,6 +159,8 @@ class AppRadio(Process):
 
             label_pos.text = u'СТАНЦИЯ: {0} / {1}'.format(self.main.channel+1, len(self.main.playlist.playlist))
             label_vol.text = u'ГРОМКОСТЬ: {0} %'.format(self.main.volume*5)
+
+	    label_debug.text = u'BTN: {0}'.format(self.main.buttons)
 
             # display time
             dt = datetime.datetime.now()

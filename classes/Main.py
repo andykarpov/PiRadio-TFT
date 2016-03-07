@@ -11,7 +11,6 @@ from mplayer import Player, CmdPrefix
 from classes.Config import Config
 from classes.State import State
 from classes.EncodersBoard import EncodersBoard
-from classes.Keyboard import Keyboard
 from classes.PT2314 import PT2314
 from libs.fenix.program import Program
 from libs.fenix.program import Process
@@ -46,29 +45,27 @@ class Main(Process):
     playlist = None
     player = None
     state = None
-    volume_encoder = None
-    channel_encoder = None
-    keyboard = None
     pt2314 = None
 
     channel = 0
     volume = 0
-    key = None
+    buttons = 0
 
     icy_current_song = None
 
     last_channel = 0
     last_played_channel = 0
     last_volume = 0
-    last_key = None
+    last_buttons = 0
 
     current_time = 0
     last_channel_changed_time = 0
     last_volume_changed_time = 0
-    last_keyboard_changed_time = 0
+    last_buttons_changed_time = 0
     last_mpd_poll = 0
     need_save_state = False
     need_change_song = False
+    need_change_buttons = False
 
     screen_size = None
     fps = None
@@ -113,6 +110,7 @@ class Main(Process):
 
         self.pt2314 = PT2314()
         self.pt2314.setVolume(self.state.volume*5)
+	#self.pt2314.setAttenuation(0)
         self.pt2314.setBass(0)
         self.pt2314.setTreble(12)
         self.pt2314.selectChannel(0)
@@ -123,8 +121,6 @@ class Main(Process):
         self.last_volume = self.state.volume
         self.last_channel = self.state.channel
         self.last_played_channel = self.last_channel
-
-        self.keyboard = Keyboard()
 
         station_url = self.playlist.playlist[self.state.channel].url
         self.player.loadfile(station_url)
@@ -151,7 +147,7 @@ class Main(Process):
                     self.encoders_board.set_max_value2(self.channel)
                     self.encoders_board.write()
 
-                self.key = self.keyboard.reading_all()
+                self.buttons = self.encoders_board.get_buttons()
 
                 if self.last_volume != self.volume:
                     self.pt2314.setVolume(self.volume*5)
@@ -162,9 +158,10 @@ class Main(Process):
                     self.last_channel = self.channel
                     self.last_channel_changed_time = micro
 
-                if self.last_key != self.key:
-                    self.last_key = self.key
-                    self.last_keyboard_changed_time = micro
+                if self.last_buttons != self.buttons and micro - self.last_buttons_changed_time > 100:
+                    self.last_buttons = self.buttons
+                    self.last_buttons_changed_time = micro
+                    self.need_change_buttons = True
 
                 if self.last_played_channel != self.channel and micro - self.last_channel_changed_time > 1000:
                     self.need_change_song = True
@@ -203,6 +200,14 @@ class Main(Process):
                 if self.need_save_state:
                     self.need_save_state = False
                     self.state.save()
+
+		if self.need_change_buttons:
+		    self.need_change_buttons = False
+		    if self.last_buttons == Config.BTN_POWER:
+			subprocess.call(["poweroff"])
+		    if self.last_buttons == Config.BTN_ALARM:
+			subprocess.call(["reboot"])
+
             except Exception:
                 pass
 
