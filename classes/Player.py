@@ -1,31 +1,42 @@
-import pygst
-pygst.require('0.10')
-import gst
-import time
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-class Player(object):
-    def __init__(self, channel):
-        self.pipeline = gst.Pipeline("RadioPipe")
-        self.player = gst.element_factory_make("playbin", "player")
-        pulse = gst.element_factory_make("pulsesink", "pulse")
-        fakesink = gst.element_factory_make("fakesink", "fakesink")
+from mpd import MPDClient, MPDError
 
-        self.player.set_property("audio-sink", pulse)
-        self.player.set_property("video-sink", fakesink)
-	self.channel(channel)
-	self.play()
+class Player:
 
-    def channel(self, channel):
-	self.player.set_property('uri', channel)
+    def __init__(self):
+	self._client = MPDClient()
+        try:
+		self._client.timeout = 10
+		self._client.idletimeout = None
+		self._client.connect("localhost", 6600)
+        except IOError as (errno, strerror):
+		pass
+        except MPDError as e:
+		pass
 
-    def play(self):
-        self.pipeline.set_state(gst.STATE_PLAYING)
+    def load(self, playlist):
+	self._client.command_list_ok_begin()
+	self._client.stop()
+	self._client.clear()
+	self._client.load(playlist)
+	self._client.command_list_end()
+
+    def play(self, channel):
+	self._client.command_list_ok_begin()
+	self._client.stop()
+	self._client.play(channel)
+	self._client.command_list_end()
 
     def stop(self):
-        self.pipeline.set_state(gst.STATE_NULL)
+	self._client.stop()
 
-    def playnew(self, channel):
-	self.stop()
-	self.channel(channel)
-	self.play()
+    def currentsong(self):
+	try:
+		song = self._client.currentsong()
+		if song['title']:
+			return song['title']
+	except Exception:
+		return ''
 

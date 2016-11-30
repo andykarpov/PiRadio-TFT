@@ -4,7 +4,7 @@
 
 class Config:
 
-    debug = True
+    debug = False
 
     default_screen_size = (320, 240)
     fps = 10
@@ -27,6 +27,17 @@ class Config:
     color_black = (0, 0, 0)
     color_green = (127,255,127)
     color_blue = (127,127,255)
+
+    color_bg = (0, 25, 77)
+    color_station = (255, 255, 255)
+    color_song = (255, 255, 255)
+    color_bar_text = (255, 255, 255)
+    color_bar_outer = (255, 255, 255)
+    color_bar_inner = (0, 0, 0)
+    color_bar_volume = (58, 215, 255)
+    color_bar_channel = (58, 215, 255)
+    color_clock = (58, 215, 255)
+    color_debug = (127, 127, 127)
 
     state_save_timeout = 10000
     mpd_poll_timeout = 2000

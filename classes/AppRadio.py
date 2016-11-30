@@ -27,8 +27,8 @@ class AppRadio(Process):
     def begin(self, main):
 
         self.main = main
-        self.x = 0
-        self.y = 0
+        self.x = self.main.screen_size[0]/2
+        self.y = self.main.screen_size[1]/2
         self.font_big = Program.load_fnt(Config.menu_font_bold, Config.font_size_big)
         self.font_small = Program.load_fnt(Config.menu_font_bold, Config.font_size_small)
         self.font_tiny = Program.load_fnt(Config.menu_font, Config.font_size_small)
@@ -36,61 +36,67 @@ class AppRadio(Process):
         self.title = self.main.fetch_station_title()
         self.song = self.main.fetch_song_title()
 
+	# bg
+	self.graph = Program.new_map(self.main.screen_size[0], self.main.screen_size[1])
+        self.alpha = 255
+	self.size = 100
+        Program.map_clear(self.graph, Config.color_bg)
+
         # station
 	x_offset = 10
 	x_hidden_offset = 500
         offset = 16
         label_station = Program.write(self.font_big, x_offset, offset, 0, self.title)
-        label_station.colour = Config.color_white
+        label_station.colour = Config.color_station
 
         # song 1
         offset = offset + Config.font_size_big + 8
         label_song1 = Program.write(self.font_small, x_offset, offset, 0, '')
-        label_song1.colour = Config.color_white
+        label_song1.colour = Config.color_song
 
         # song 2
         offset = offset + Config.font_size_small + 2
         label_song2 = Program.write(self.font_small, x_offset, offset, 0, '')
-        label_song2.colour = Config.color_white
+        label_song2.colour = Config.color_song
 
         # song 3
         offset = offset + Config.font_size_small + 2
         label_song3 = Program.write(self.font_small, x_offset, offset, 0, '')
-        label_song3.colour = Config.color_white
+        label_song3.colour = Config.color_song
 
         # song 4
         offset = offset + Config.font_size_small + 2
         label_song4 = Program.write(self.font_small, x_offset, offset, 0, '')
-        label_song4.colour = Config.color_white
+        label_song4.colour = Config.color_song
 
         # channel
         offset = offset + Config.font_size_small + 12
-        bar_0 = VolumeBar(self.main, x_offset-5, offset, 100, 100, 12, Config.color_white)
-        bar_1 = VolumeBar(self.main, x_offset+1-5, offset+1, 100, 100, 10, Config.color_black)
-        bar = VolumeBar(self.main, x_offset+2-5, offset+2, self.main.channel+1, len(self.main.playlist.playlist), 8, Config.color_blue)
+        bar_0 = VolumeBar(self.main, x_offset-5, offset, 100, 100, 12, Config.color_bar_outer)
+        bar_1 = VolumeBar(self.main, x_offset+1-5, offset+1, 100, 100, 10, Config.color_bar_inner)
+        bar = VolumeBar(self.main, x_offset+2-5, offset+2, self.main.channel+1, len(self.main.playlist.playlist), 8, Config.color_bar_channel)
 
         offset = offset + 16
         label_pos = Program.write(self.font_small, x_offset, offset, 0, '')
-        label_pos.colour = Config.color_white
+        label_pos.colour = Config.color_bar_text
 
         # clock
         label_clock = Program.write(self.font_digits, x_offset, offset, 0, '')
-        label_clock.colour = Config.color_white
+        label_clock.colour = Config.color_clock
 
         # volume
         offset = offset + Config.font_size_small + 12
-        bar2_0 = VolumeBar(self.main, x_offset-5, offset, 100, 100, 12, Config.color_white)
-        bar2_1 = VolumeBar(self.main, x_offset+1-5, offset+1, 100, 100, 10, Config.color_black)
-        bar2 = VolumeBar(self.main, x_offset+2-5, offset+2, self.main.volume, 20, 8, Config.color_green)
+        bar2_0 = VolumeBar(self.main, x_offset-5, offset, 100, 100, 12, Config.color_bar_outer)
+        bar2_1 = VolumeBar(self.main, x_offset+1-5, offset+1, 100, 100, 10, Config.color_bar_inner)
+        bar2 = VolumeBar(self.main, x_offset+2-5, offset+2, self.main.volume, 20, 8, Config.color_bar_volume)
 
         offset = offset + 16
         label_vol = Program.write(self.font_small, x_offset, offset, 0, '')
-        label_vol.colour = Config.color_white
+        label_vol.colour = Config.color_bar_text
 
 	# debug
         offset = offset + Config.font_size_small + 2
         label_debug = Program.write(self.font_small, x_offset, offset, 0, '')
-        label_debug.colour = Config.color_white
+        label_debug.colour = Config.color_debug
 
         while True:
 
@@ -125,7 +131,7 @@ class AppRadio(Process):
             self.title = self.main.fetch_station_title()
             if self.last_title != self.title:
                 label_station.text = self.title
-                self.song = u'ЗАГРУЗКА...'
+                self.song = u'LOADING...'
                 self.last_title = self.title
 
             if current - self.last_song_fetch > Config.mpd_poll_timeout and self.main.need_change_song is False:
@@ -157,10 +163,11 @@ class AppRadio(Process):
                 label_song3.text = ''
                 label_song4.text = ''
 
-            label_pos.text = u'СТАНЦИЯ: {0} / {1}'.format(self.main.channel+1, len(self.main.playlist.playlist))
-            label_vol.text = u'ГРОМКОСТЬ: {0} %'.format(self.main.volume*5)
+            label_pos.text = u'CHANNEL: {0} / {1}'.format(self.main.channel+1, len(self.main.playlist.playlist))
+            label_vol.text = u'VOLUME: {0} %'.format(self.main.volume*5)
 
-	    label_debug.text = u'BTN: {0}'.format(self.main.buttons)
+	    if Config.debug is True:
+		label_debug.text = u'button: {0}'.format(self.main.buttons)
 
             # display time
             dt = datetime.datetime.now()

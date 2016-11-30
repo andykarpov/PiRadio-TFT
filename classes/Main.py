@@ -7,7 +7,7 @@ import re
 import subprocess
 from datetime import datetime
 from classes.Playlist import Playlist
-from mplayer import Player, CmdPrefix
+from classes.Player import Player
 from classes.Config import Config
 from classes.State import State
 from classes.EncodersBoard import EncodersBoard
@@ -62,6 +62,7 @@ class Main(Process):
     last_channel_changed_time = 0
     last_volume_changed_time = 0
     last_buttons_changed_time = 0
+    last_currentsong_time = 0
     last_mpd_poll = 0
     need_save_state = False
     need_change_song = False
@@ -96,10 +97,7 @@ class Main(Process):
 
         self.playlist = Playlist()
 
-	Player.cmd_prefix = CmdPrefix.PAUSING_KEEP
-
         self.player = Player()
-	self.player.stdout.connect(self.player_handle_data)
 
         self.state = State()
 
@@ -123,7 +121,8 @@ class Main(Process):
         self.last_played_channel = self.last_channel
 
         station_url = self.playlist.playlist[self.state.channel].url
-        self.player.loadfile(station_url)
+        self.player.load("radio")
+	self.player.play(self.state.channel)
 
         self.scene = AppRadio(self)
 
@@ -174,28 +173,27 @@ class Main(Process):
                     self.state.channel = self.channel
                     self.need_save_state = True
 
+		if micro - self.last_currentsong_time > 1000:
+		    self.icy_current_song = self.player.currentsong()
+		    #print self.icy_current_song
+		    self.last_currentsong_time = micro
+
                 global ring_bell
                 if ring_bell:
                     #print "Doorbell detected";
                     ring_bell = False
-                    subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
-                    time.sleep(0.5)
+                    self.player.stop()
                     self.pt2314.setVolume(95)
-                    self.player = Player()
-                    self.player.loadfile(Config.bell)
-                    self.player.stdout.connect(self.player_handle_data)
-                    time.sleep(5);
+		    os.system('mplayer ' + Config.bell)
+                    time.sleep(0.5)
                     self.pt2314.setVolume(self.volume*5)
                     self.need_change_song = True
 
                 if self.need_change_song:
                     self.need_change_song = False
                     self.last_played_channel = self.channel
-		    subprocess.call(["killall", "-s", "SIGKILL", "mplayer"]);
 		    time.sleep(0.5)
-		    self.player = Player()
-                    self.player.loadfile(self.playlist.playlist[self.channel].url)
-                    self.player.stdout.connect(self.player_handle_data)
+		    self.player.play(self.channel)
 
                 if self.need_save_state:
                     self.need_save_state = False
@@ -226,20 +224,14 @@ class Main(Process):
         decoded = text.decode(guess["encoding"])
         return decoded
 
-    def player_handle_data(self, line):
-       if line.startswith('ICY Info:'):
-           info = line.split(':', 1)[1].strip()
-           attrs = dict(re.findall("(\w+)='([^']*)'", info))
-           self.icy_current_song = attrs.get('StreamTitle', '(none)')
-           print self.icy_current_song
-
     def fetch_song_title(self):
 
         if self.icy_current_song is not None and self.icy_current_song != '':
 	    try:
                 title = self.unicodify(self.icy_current_song)
+		#title = self.icy_current_song
                 return title.upper()
-            except Exception:
+            except Exception as e:
                 return ''
         else:
             return ''
