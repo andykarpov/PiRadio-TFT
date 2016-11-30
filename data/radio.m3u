@@ -1,6 +1,4 @@
 #EXTM3U
-#EXTINF:-1,Doorbell
-file:///home/pi/PiRadio/data/doorbell.mp3
 #EXTINF:-1,SLAY Radio
 http://relay3.slayradio.org:8000/
 #EXTINF:-1,Radio Paradise
